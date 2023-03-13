@@ -13,7 +13,7 @@ import { validation } from "../middleware/validation.js";
 import { contactsValidation } from "../validations/contactsValidation.js";
 const router = express.Router();
 
-router.post("/create", async (req, res) => {
+router.post("/create",validation(contactsValidation), async (req, res) => {
   const newContact = req.body;
   const ifContactExists = await getContactByEmail(newContact.email);
 
