@@ -13,7 +13,8 @@ import { validation } from "../middleware/validation.js";
 import { contactsValidation } from "../validations/contactsValidation.js";
 const router = express.Router();
 
-router.post("/create",validation(contactsValidation), async (req, res) => {
+//CREATE
+router.post("/create", validation(contactsValidation), async (req, res) => {
   const newContact = req.body;
   const ifContactExists = await getContactByEmail(newContact.email);
 
@@ -35,11 +36,13 @@ router.post("/create",validation(contactsValidation), async (req, res) => {
   res.send(result);
 });
 
+//READ all contacts
 router.get("/read", auth, async (req, res) => {
   const contacts = await getContacts();
   res.send(contacts);
 });
 
+//READ contact by ID
 router.get("/read/:id", auth, async (req, res) => {
   const { id } = req.params;
   const contact = await getContactById(id);
@@ -48,6 +51,7 @@ router.get("/read/:id", auth, async (req, res) => {
     : res.status(404).send({ msg: "Contact dose not exist" });
 });
 
+//UPDATE contact by ID
 router.put("update/:id", auth, async (req, res) => {
   const { id } = req.params;
   const updateContact = req.body;
@@ -55,6 +59,7 @@ router.put("update/:id", auth, async (req, res) => {
   res.send(result);
 });
 
+//DELETE contact by ID
 router.delete("/delete/:id", auth, async (req, res) => {
   const { id } = req.params;
   const result = await deleteContactById(id);
